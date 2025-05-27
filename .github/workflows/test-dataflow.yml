@@ -1,0 +1,68 @@
+name: Test Pub/Sub
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  pubsub-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Install Google Cloud Pub/Sub CLI dependencies
+        run: |
+          pip install google-cloud-pubsub
+
+      - name: Publish a test message
+        run: |
+          python -c "
+import time
+from google.cloud import pubsub_v1
+
+project_id = '${{ secrets.GCP_PROJECT_ID }}'
+topic_id = 'test-topic'
+publisher = pubsub_v1.PublisherClient()
+topic_path = publisher.topic_path(project_id, topic_id)
+
+future = publisher.publish(topic_path, b'Hello from GitHub Action!')
+print('Published:', future.result())
+"
+
+      - name: Pull message from subscription
+        run: |
+          python -c "
+import time
+from google.cloud import pubsub_v1
+
+project_id = '${{ secrets.GCP_PROJECT_ID }}'
+subscription_id = 'test-subscription'
+subscriber = pubsub_v1.SubscriberClient()
+subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+response = subscriber.pull(
+    request={
+        'subscription': subscription_path,
+        'max_messages': 1,
+    },
+    timeout=15
+)
+
+for msg in response.received_messages:
+    print('Received:', msg.message.data.decode('utf-8'))
+    subscriber.acknowledge(
+        request={
+            'subscription': subscription_path,
+            'ack_ids': [msg.ack_id],
+        }
+    )
+"
