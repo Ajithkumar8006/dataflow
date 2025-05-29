@@ -41,6 +41,6 @@ jobs:
 
       - name: Create Storage Bucket
         run: |
-          gcloud storage buckets create "${{ inputs.bucket_name }}" \
+          gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
             --project="${{ inputs.gcp_project_id }}" \
             --location="${{ inputs.bucket_location }}"
