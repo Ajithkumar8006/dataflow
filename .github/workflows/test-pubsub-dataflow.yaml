@@ -14,7 +14,7 @@ on:
       pubsub_topic:
         required: false
         type: string
-        default: 'pubsub-test'
+        default: 'test-topic'
 
 jobs:
   test-dataflow:
