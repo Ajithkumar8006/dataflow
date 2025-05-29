@@ -43,6 +43,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
+        echo "Current working directory: $(pwd)"
         pip install -r ${{ inputs.dataflow_path }}/requirements.txt
 
     - name: Launch Dataflow job
