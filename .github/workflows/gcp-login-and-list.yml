@@ -1,5 +1,3 @@
-# .github/workflows/gcp-login-and-list.yml
-
 name: GCP Login and List Instances
 
 on:
@@ -8,31 +6,38 @@ on:
       gcp_project_id:
         required: true
         type: string
+    secrets:
       gcp_credentials:
         required: true
-        type: string
+
+    outputs:
+      instance_output:
+        description: "List of GCP instances"
+        value: ${{ jobs.list-instances.outputs.instance_output }}
 
 jobs:
   list-instances:
     runs-on: ubuntu-latest
+    outputs:
+      instance_output: ${{ steps.capture-output.outputs.instances }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ inputs.gcp_project_id }}
-          service_account_key: ${{ inputs.gcp_credentials }}
+          service_account_key: ${{ secrets.gcp_credentials }}
 
       - name: Authenticate with GCP
         run: |
-          echo "${{ inputs.gcp_credentials }}" > "${{ github.workspace }}/key.json"
-          gcloud auth activate-service-account --key-file="${{ github.workspace }}/key.json"
+          echo "${{ secrets.gcp_credentials }}" > key.json
+          gcloud auth activate-service-account --key-file=key.json
           gcloud config set project ${{ inputs.gcp_project_id }}
 
-      - name: List Compute Engine instances
+      - name: List Compute Engine instances and capture output
+        id: capture-output
         run: |
-          echo "Fetching Compute Engine instances in project ${{ inputs.gcp_project_id }}"
-          gcloud compute instances list || echo "No instances found"
+          instances=$(gcloud compute instances list --format="json" || echo "[]")
+          echo "instances<<EOF" >> $GITHUB_OUTPUT
+          echo "$instances" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
