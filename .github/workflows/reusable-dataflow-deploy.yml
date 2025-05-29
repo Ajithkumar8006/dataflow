@@ -6,12 +6,15 @@ on:
       dataflow_path:
         required: true
         type: string
+        default: 'dtaflow/pubsub/'
       job_name:
         required: true
         type: string
+        default: 'pubsub-dataflow'
       pubsub_topic:
         required: false
         type: string
+        default: 'pubsub-test'
 
 jobs:
   deploy:
