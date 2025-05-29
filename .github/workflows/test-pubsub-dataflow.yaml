@@ -1,6 +1,4 @@
-# .github/workflows/test-pubsub-dataflow.yaml
-
-name: Test Dataflow with Pub/Sub
+name: Test Pub/Sub Dataflow
 
 on:
   push:
@@ -13,6 +11,6 @@ jobs:
     uses: ./.github/workflows/rusable-dataflow-deploy.yaml
     with:
       dataflow_path: dataflows/pubsub
-      job_name: test-patient-orders-${{ github.run_number }}
-      pubsub_topic: projects/${{ secrets.GCP_PROJECT_ID }}/topics/test-patient-orders
+      job_name: test-pubsub-${{ github.run_number }}
+      pubsub_topic: projects/${{ secrets.GCP_PROJECT_ID }}/topics/test-pubsub
     secrets: inherit
