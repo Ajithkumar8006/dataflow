@@ -6,15 +6,12 @@ on:
       dataflow_path:
         required: false
         type: string
-        default: 'dataflow/pubsub'
       job_name:
         required: false
         type: string
-        default: 'pubsub-dataflow'
       pubsub_topic:
         required: false
         type: string
-        default: 'pubsub-test'
     secrets:
       GCP_CREDENTIALS:
         required: true
