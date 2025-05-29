@@ -43,7 +43,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        pip install -r ${{ inputs.dataflow_path }}/requirement.txt
+        pip install -r ${{ inputs.dataflow_path }}/requirements.txt
 
     - name: Launch Dataflow job
       run: |
