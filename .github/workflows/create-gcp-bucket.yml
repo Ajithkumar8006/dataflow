@@ -1,0 +1,28 @@
+name: Create GCP Bucket
+
+on:
+  workflow_dispatch:
+    inputs:
+      gcp_project_id:
+        description: 'GCP Project ID'
+        required: true
+        type: string
+      bucket_name:
+        description: 'Name of the bucket to create'
+        required: true
+        type: string
+      bucket_region:
+        description: 'Region for the bucket (e.g. us-central1)'
+        required: false
+        default: 'us-central1'
+        type: string
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/reusable-create-gcp-bucket.yml
+    with:
+      gcp_project_id: ${{ inputs.gcp_project_id }}
+      bucket_name: ${{ inputs.bucket_name }}
+      bucket_region: ${{ inputs.bucket_region }}
+    secrets:
+      GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
