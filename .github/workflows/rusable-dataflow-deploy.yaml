@@ -1,0 +1,47 @@
+# .github/workflows/rusable-dataflow-deploy.yaml
+
+name: Reusable Dataflow Deploy
+
+on:
+  workflow_call:
+    inputs:
+      dataflow_path:
+        required: true
+        type: string
+      job_name:
+        required: true
+        type: string
+      pubsub_topic:
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r ${{ inputs.dataflow_path }}/requirement.txt
+
+    - name: Launch Dataflow Job
+      run: |
+        python ${{ inputs.dataflow_path }}/main.py \
+          --runner=DataflowRunner \
+          --project=$PROJECT_ID \
+          --temp_location=gs://$BUCKET/temp \
+          --region=$REGION \
+          --job_name=${{ inputs.job_name }} \
+          --input_topic=${{ inputs.pubsub_topic }}
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        BUCKET: ${{ secrets.GCS_BUCKET }}
+        REGION: ${{ secrets.GCP_REGION }}
