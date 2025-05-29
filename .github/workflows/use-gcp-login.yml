@@ -1,21 +1,46 @@
-name: Use GCP Reusable Workflow
+name: Test GCP Authentication
 
 on:
   workflow_dispatch:
+    inputs:
+      gcp_project_id:
+        description: 'GCP Project ID'
+        required: true
+        type: string
+      bucket_name:
+        description: 'Name of the bucket to create'
+        required: true
+        type: string
+      bucket_location:
+        description: 'Location for the bucket (e.g. US, EU)'
+        required: false
+        default: US
+        type: string
 
 jobs:
-  call-login-and-list:
-    uses: ./.github/workflows/gcp-login-and-list.yml
-    with:
-      gcp_project_id: ${{ vars.GCP_PROJECT_ID }}  # OR hardcode the ID here
-    secrets:
-      gcp_credentials: ${{ secrets.GCP_SA_KEY }}
-
-  print-instances:
-    needs: call-login-and-list
+  authenticate:
     runs-on: ubuntu-latest
     steps:
-      - name: Print instance info
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ inputs.gcp_project_id }}
+
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verify Authentication
         run: |
-          echo "Available instances:"
-          echo '${{ needs.call-login-and-list.outputs.instance_output }}' | jq .
+          gcloud auth list
+          gcloud config list project
+
+      - name: Create Storage Bucket
+        run: |
+          gcloud storage buckets create "${{ inputs.bucket_name }}" \
+            --project="${{ inputs.gcp_project_id }}" \
+            --location="${{ inputs.bucket_location }}"
