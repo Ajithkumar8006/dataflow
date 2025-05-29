@@ -1,3 +1,5 @@
+# .github/workflows/use-gcp-login.yml
+
 name: Use GCP Reusable Workflow
 
 on:
@@ -7,9 +9,8 @@ jobs:
   call-login-and-list:
     uses: ./.github/workflows/gcp-login-and-list.yml
     with:
-      gcp_project_id: your-gcp-project-id
+      gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
       gcp_credentials: ${{ secrets.GCP_SA_KEY }}
-    secrets: inherit
 
   print-instances:
     needs: call-login-and-list
