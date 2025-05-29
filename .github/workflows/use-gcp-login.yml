@@ -9,7 +9,8 @@ jobs:
   call-login-and-list:
     uses: ./.github/workflows/gcp-login-and-list.yml
     with:
-      gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
+      gcp_project_id: ${{ vars.GCP_PROJECT_ID }}
+    secrets:
       gcp_credentials: ${{ secrets.GCP_SA_KEY }}
 
   print-instances:
