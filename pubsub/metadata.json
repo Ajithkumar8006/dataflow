@@ -1,0 +1,7 @@
+{
+  "name": "patient-orders",
+  "description": "A Dataflow pipeline that reads patient order messages from Pub/Sub",
+  "language": "python",
+  "pipeline": "main.py",
+  "streaming": true
+}
