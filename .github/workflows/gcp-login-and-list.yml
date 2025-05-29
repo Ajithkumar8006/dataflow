@@ -9,7 +9,6 @@ on:
     secrets:
       gcp_credentials:
         required: true
-
     outputs:
       instance_output:
         description: "List of GCP instances"
@@ -22,17 +21,15 @@ jobs:
       instance_output: ${{ steps.capture-output.outputs.instances }}
 
     steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.gcp_credentials }}
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ inputs.gcp_project_id }}
-          service_account_key: ${{ secrets.gcp_credentials }}
-
-      - name: Authenticate with GCP
-        run: |
-          echo "${{ secrets.gcp_credentials }}" > key.json
-          gcloud auth activate-service-account --key-file=key.json
-          gcloud config set project ${{ inputs.gcp_project_id }}
 
       - name: List Compute Engine instances and capture output
         id: capture-output
