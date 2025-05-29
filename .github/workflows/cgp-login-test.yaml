@@ -29,3 +29,9 @@ jobs:
         run: |
           gcloud auth list
           gcloud config list project
+
+      - name: Create Storage Bucket
+        run: |
+          gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
+            --project="${{ inputs.gcp_project_id }}" \
+            --location="${{ inputs.bucket_location }}"
