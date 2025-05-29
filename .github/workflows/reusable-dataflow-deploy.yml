@@ -15,11 +15,13 @@ on:
         required: false
         type: string
         default: 'pubsub-test'
+    secrets:
+      GCP_CREDENTIALS:
+        required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
