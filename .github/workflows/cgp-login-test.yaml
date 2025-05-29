@@ -1,4 +1,4 @@
-name: Test GCP Authentication
+name: Test GCP Authentication & create GCS
 
 on:
   workflow_dispatch:
@@ -6,6 +6,15 @@ on:
       gcp_project_id:
         description: 'GCP Project ID'
         required: true
+        type: string
+      bucket_name:
+        description: 'Name of the bucket to create'
+        required: true
+        type: string
+      bucket_region:
+        description: 'Region for the bucket (e.g. us-central1)'
+        required: false
+        default: us-central1
         type: string
 
 jobs:
@@ -30,8 +39,12 @@ jobs:
           gcloud auth list
           gcloud config list project
 
-      - name: Create Storage Bucket
+      - name: Create Storage Bucket (if not exists)
         run: |
-          gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
-            --project="${{ inputs.gcp_project_id }}" \
-            --location="${{ inputs.bucket_location }}"
+          if ! gcloud storage buckets list --project="${{ inputs.gcp_project_id }}" --format="value(name)" | grep -q "^${{ inputs.bucket_name }}$"; then
+            gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
+              --project="${{ inputs.gcp_project_id }}" \
+              --location="${{ inputs.bucket_region }}"
+          else
+            echo "Bucket '${{ inputs.bucket_name }}' already exists."
+          fi
