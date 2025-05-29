@@ -50,11 +50,11 @@ jobs:
       run: |
         python ${{ inputs.dataflow_path }}/main.py \
           --runner=DataflowRunner \
-          --project=$PROJECT_ID \
-          --temp_location=gs://$BUCKET/temp \
-          --region=$REGION \
-          --job_name=${{ inputs.job_name }} \
-          --input_topic=projects/$PROJECT_ID/topics/test-topic }}
+          --project=apigee-test-0001-demo \
+          --temp_location=gs://apigee-test-0001-demo-pubsub-output/temp \
+          --region=us-central1 \
+          --job_name=pubsub-dataflow \
+          --input_topic=projects/apigee-test-0001-demo/topics/test-topic }}
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         BUCKET: ${{ secrets.GCS_BUCKET }}
