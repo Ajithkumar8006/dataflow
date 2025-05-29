@@ -12,5 +12,5 @@ jobs:
     with:
       dataflow_path: dataflows/pubsub
       job_name: test-pubsub-${{ github.run_number }}
-      pubsub_topic: projects/${{ secrets.GCP_PROJECT_ID }}/topics/test-pubsub
+      pubsub_topic: test-pubsub
     secrets: inherit
