@@ -19,4 +19,8 @@ on:
 jobs:
   test-dataflow:
     uses: ./.github/workflows/reusable-dataflow-deploy.yml
+    with:
+      dataflow_path: ${{ inputs.dataflow_path }}
+      job_name: ${{ inputs.job_name }}
+      pubsub_topic: ${{ inputs.pubsub_topic }}
     secrets: inherit
