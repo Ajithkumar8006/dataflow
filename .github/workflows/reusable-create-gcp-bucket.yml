@@ -37,7 +37,7 @@ jobs:
       - name: Create Storage Bucket (if not exists)
         run: |
           if ! gcloud storage buckets list --project="${{ inputs.gcp_project_id }}" --format="value(name)" | grep -q "^${{ inputs.bucket_name }}$"; then
-            gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
+            gcloud storage buckets delete "gs://${{ inputs.bucket_name }}" \
               --project="${{ inputs.gcp_project_id }}" \
               --location="${{ inputs.bucket_region }}"
           else
