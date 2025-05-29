@@ -5,9 +5,5 @@ on:
 
 jobs:
   test-dataflow:
-    uses: ./.github/workflows/rusable-dataflow-deploy.yaml
-    with:
-      dataflow_path: dataflows/pubsub
-      job_name: test-pubsub-${{ github.run_number }}
-      pubsub_topic: test-pubsub
+    uses: ./.github/workflows/reusable-dataflow-deploy.yml
     secrets: inherit
