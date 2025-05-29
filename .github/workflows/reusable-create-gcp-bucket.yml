@@ -1,0 +1,50 @@
+name: Reusable - Create GCP Bucket
+
+on:
+  workflow_call:
+    inputs:
+      gcp_project_id:
+        required: true
+        type: string
+      bucket_name:
+        required: true
+        type: string
+      bucket_region:
+        required: false
+        type: string
+        default: 'us-central1'
+    secrets:
+      GCP_CREDENTIALS:
+        required: true
+
+jobs:
+  create-bucket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ inputs.gcp_project_id }}
+
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verify Authentication
+        run: |
+          gcloud auth list
+          gcloud config list project
+
+      - name: Create Storage Bucket (if not exists)
+        run: |
+          if ! gcloud storage buckets list --project="${{ inputs.gcp_project_id }}" --format="value(name)" | grep -q "^${{ inputs.bucket_name }}$"; then
+            gcloud storage buckets create "gs://${{ inputs.bucket_name }}" \
+              --project="${{ inputs.gcp_project_id }}" \
+              --location="${{ inputs.bucket_region }}"
+          else
+            echo "Bucket '${{ inputs.bucket_name }}' already exists."
+          fi
