@@ -6,7 +6,7 @@ on:
       dataflow_path:
         required: false
         type: string
-        default: 'dataflow/pubsub'
+        default: '/home/runner/work/dataflow/dataflow/pubsub'
       job_name:
         required: false
         type: string
