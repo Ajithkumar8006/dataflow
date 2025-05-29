@@ -19,8 +19,4 @@ on:
 jobs:
   test-dataflow:
     uses: ./.github/workflows/reusable-dataflow-deploy.yml
-    with:
-      dataflow_path: dataflows/pubsub
-      job_name: test-pubsub-${{ github.run_number }}
-      pubsub_topic: projects/${{ secrets.GCP_PROJECT_ID }}/topics/test-pubsub
     secrets: inherit
