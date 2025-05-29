@@ -1,9 +1,6 @@
 name: Test Pub/Sub Dataflow
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
