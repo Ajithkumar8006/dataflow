@@ -34,11 +34,6 @@ jobs:
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Verify Authentication
-        run: |
-          gcloud auth list
-          gcloud config list project
-
       - name: Create Storage Bucket (if not exists)
         run: |
           if ! gcloud storage buckets list --project="${{ inputs.gcp_project_id }}" --format="value(name)" | grep -q "^${{ inputs.bucket_name }}$"; then
