@@ -1,5 +1,6 @@
 import argparse
 import logging
+import time  # ✅ Added for sleep
 from concurrent import futures
 from google.cloud import pubsub_v1
 from google.api_core.exceptions import AlreadyExists, GoogleAPICallError, NotFound
@@ -91,6 +92,10 @@ try:
 except Exception as e:
     logging.error(f"❌ Error during publishing messages: {e}")
     exit(1)
+
+# ✅ Add 10-second delay before subscribing
+logging.info("⏱️ Waiting 10 seconds before starting subscriber...")
+time.sleep(10)
 
 # --- Step 3: Subscribe & Acknowledge Messages ---
 received_messages = []
