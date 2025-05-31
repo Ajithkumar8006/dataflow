@@ -44,7 +44,7 @@ jobs:
         run: |
           echo '${{ secrets.GCP_CREDENTIALS }}' > gcp-key.json
           export GOOGLE_APPLICATION_CREDENTIALS="gcp-key.json"
-          python pubsub_test.py \
+          python /home/runner/work/dataflow/dataflow/pubsub/pubsub_test.py \
             --project_id "${{ inputs.gcp_project_id }}" \
             --topic_id "${{ inputs.pubsub_topic_id }}" \
             --subscription_id "${{ inputs.pubsub_subscription_id }}"
