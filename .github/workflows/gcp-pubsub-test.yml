@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-reusable-pubsub:
-    uses: ./.github/workflows/reusable-gcp-pubsub-test.yml@main
+    uses: ./.github/workflows/reusable-gcp-pubsub-test.yml
     with:
       gcp_project_id: "apigee-test-0001-demo"
       pubsub_topic_id: "test-topic"
