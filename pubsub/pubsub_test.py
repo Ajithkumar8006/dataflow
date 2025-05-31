@@ -126,3 +126,4 @@ finally:
     subscriber.close()
 
 logging.info("✅ Finished: All messages published and acknowledged.")
+#https://cloud.google.com/pubsub/docs/publisher
