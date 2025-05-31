@@ -1,0 +1,15 @@
+name: Call Pub/Sub Test Workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  call-reusable-pubsub:
+    uses: ./.github/workflows/reusable-gcp-pubsub-test.yml@main
+    with:
+      gcp_project_id: "apigee-test-0001-demo"
+      pubsub_topic_id: "test-topic"
+      pubsub_subscription_id: "test-subscription"
+    secrets:
+      GCP_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT }}
