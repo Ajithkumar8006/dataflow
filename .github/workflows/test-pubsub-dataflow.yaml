@@ -1,20 +1,20 @@
 name: Test Pub/Sub Dataflow
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      dataflow_path:
-        required: false
+      gcp_project_id:
+        required: true
         type: string
-        default: '/home/runner/work/dataflow/dataflow/pubsub'
-      job_name:
-        required: false
+      pubsub_topic_id:
+        required: true
         type: string
-        default: 'pubsub-dataflow'
-      pubsub_topic:
-        required: false
+      pubsub_subscription_id:
+        required: true
         type: string
-        default: 'test-topic'
+    secrets:
+      GCP_CREDENTIALS:
+        required: true
 
 jobs:
   test-dataflow:
