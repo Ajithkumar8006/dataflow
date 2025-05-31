@@ -24,7 +24,7 @@ jobs:
       - name: 📦 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🔐 Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud
         id: gcp-auth
         uses: google-github-actions/auth@v2
         with:
