@@ -54,7 +54,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ inputs.gcp_project_id }}
-          service_account_key: ${{ secrets.GCP_PUBSUB_KEY }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           export_default_credentials: true
             
       - name: 🪣 Create GCS Bucket
