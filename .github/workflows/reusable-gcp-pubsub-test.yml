@@ -49,6 +49,13 @@ jobs:
             --project_id "${{ inputs.gcp_project_id }}" \
             --topic_id "${{ inputs.pubsub_topic_id }}" \
             --subscription_id "${{ inputs.pubsub_subscription_id }}"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ inputs.gcp_project_id }}
+          service_account_key: ${{ secrets.GCP_PUBSUB_KEY }}
+          export_default_credentials: true
             
       - name: 🪣 Create GCS Bucket
         run: |
