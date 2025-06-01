@@ -49,3 +49,16 @@ jobs:
             --project_id "${{ inputs.gcp_project_id }}" \
             --topic_id "${{ inputs.pubsub_topic_id }}" \
             --subscription_id "${{ inputs.pubsub_subscription_id }}"
+            
+      - name: 🪣 Create GCS Bucket
+        run: |
+          BUCKET_NAME="${{ inputs.gcp_project_id }}-12345"
+          REGION="us-central1"
+
+          # Check if the bucket exists
+          if ! gsutil ls -b gs://$BUCKET_NAME >/dev/null 2>&1; then
+            gsutil mb -l $REGION gs://$BUCKET_NAME
+            echo "✅ Bucket $BUCKET_NAME created."
+          else
+            echo "⚠️ Bucket $BUCKET_NAME already exists."
+          fi
