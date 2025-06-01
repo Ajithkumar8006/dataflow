@@ -50,11 +50,10 @@ jobs:
             --topic_id "${{ inputs.pubsub_topic_id }}" \
             --subscription_id "${{ inputs.pubsub_subscription_id }}"
       
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_PUBSUB_KEY }}'
-          project_id: ${{ inputs.gcp_project_id }}
+          credentials_json: ${{ secrets.GCP_PUBSUB_KEY }}
           install_components: 'gke-gcloud-auth-plugin'
             
       - name: 🪣 Create GCS Bucket
