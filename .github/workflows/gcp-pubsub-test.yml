@@ -31,4 +31,4 @@ jobs:
       pubsub_topic_id: ${{ inputs.pubsub_topic }}
       pubsub_subscription_id: ${{ inputs.pubsub_subscription }}
     secrets:
-      GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      GCP_PUBSUB_KEY: ${{ secrets.GCP_PUBSUB_KEY }}
